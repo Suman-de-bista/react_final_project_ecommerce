@@ -1,1 +1,1 @@
-# react_final_project_grocery_store
+# react_final_project_ecommerce

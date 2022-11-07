@@ -16,17 +16,17 @@ const SearchList = (props) => {
   const loading = useSelector(state=> state.products.loading)
   const cartItems = useSelector(state=> state.cart.cartItems)
   
-console.log(cartItems.cartProducts);
+// console.log(cartItems.cartProducts);
   const items = !loading && props.searchItem && products.filter(value=>value.title.toLowerCase().includes(props.searchItem.toLowerCase()))
-  console.log(items);
+  // console.log(items);
 
   const handleAddToCart = (product) => {
 
     const addItem = cartItems && cartItems.cartProducts.filter((value)=>value.product.id === product.id);
     const quantity = addItem.length !==0 ? addItem[0].quantity+1 : 1;
-    console.log("Quantity : ",quantity);
+    // console.log("Quantity : ",quantity);
     product["quantity"] = quantity;
-    console.log(product);
+    // console.log(product);
     dispatch(addTocart(product));
   };
   return (

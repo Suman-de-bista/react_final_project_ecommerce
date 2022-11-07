@@ -6,6 +6,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { useEffect } from "react";
 import { userLogin } from "../Redux/Actions/AuthenticationActions";
 import { useState } from "react";
+import Swal from 'sweetalert2';
 
 
 const Login = () => {
@@ -17,7 +18,7 @@ const Login = () => {
   const loginResponse = useSelector(state=> state.Auth.login)
   const navigate = useNavigate();
 
-  console.log(isLoggedIn);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const loginDetails = {username,password}
@@ -35,6 +36,7 @@ const Login = () => {
     if(localStorage.getItem("loginDetail")){
        setIsLoggedIn(true)
        navigate('/')
+       window.location.reload(false);
       } 
     else{
       setIsLoggedIn(false);
@@ -44,9 +46,29 @@ const Login = () => {
 
   useEffect(()=>{
     checkLogin();
+    
   },[loginResponse])
+
+  useEffect(()=>{
+    if(isLoggedIn){
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `Success`,
+        text:'Successfully LoggedIn',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setTimeout(()=>{
+        (navigate('/'));
+        window.location.reload(false);
+      },2000)
+    
+    }
+    
+  },[isLoggedIn])
   return (
-    <div>
+    <div> 
       <div className="breadcrumbs">
         <div className="container">
           <ol

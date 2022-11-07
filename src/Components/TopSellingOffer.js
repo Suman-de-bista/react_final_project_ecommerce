@@ -3,19 +3,28 @@ import React, { useState, useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchHomePage } from "../Redux/Actions/ProductActions";
-import { addTocart } from "../Redux/Actions/CartActions";
+import { addTocart, fetchCart } from "../Redux/Actions/CartActions";
+import { Link } from "react-router-dom";
 
 
 const TopSellingOffer = () => {
+  const cartItems = useSelector(state=> state.cart.cartItems);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchHomePage());
+    dispatch(fetchCart());
+
   }, []);
 
   const handleAddToCart = (product) => {
+
+    const addItem = cartItems && cartItems.cartProducts.filter((value)=>value.product.id === product.id);
+    const quantity = addItem.length !==0 ? addItem[0].quantity+1 : 1;
+    // console.log("Quantity : ",quantity);
+    product["quantity"] = quantity;
+    // console.log(product);
     dispatch(addTocart(product));
   };
-  
 
 
   const homePage = useSelector((state) => state.products.homepage.appCategories);
@@ -29,7 +38,7 @@ const TopSellingOffer = () => {
       setOfferOption("todayOffers");
     }
   };
-  console.log(offerOption);
+  // console.log(offerOption);
 
   return (
     <div>
@@ -110,13 +119,14 @@ const TopSellingOffer = () => {
                                 <figure>
                                   <div className="snipcart-item block">
                                     <div className="snipcart-thumb">
-                                      <a href="products.html">
+                                      <Link to={`/category/${value.categoryTitle}/product/${value.title}`}>
+                                        {console.log(value)}
                                         <img
                                           title=" "
                                           alt={value.title}
                                           src={value.images[0].imageName}
                                         />
-                                      </a>
+                                      </Link>
                                       <p>{value.title}</p>
                                       <div className="rating1">
                                       <span className="starRating">

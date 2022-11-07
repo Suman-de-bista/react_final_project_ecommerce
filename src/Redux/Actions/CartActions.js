@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ADD_TO_CART, FETCH_CART } from "../ActionTypes/ActionTypes";
 
 const BASE_URL = "https://uat.ordering-farmshop.ekbana.net";
@@ -11,43 +12,52 @@ myHeaders.append(
   "Api-Key",
   "3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx"
 );
+myHeaders.append("Access-Control-Allow-Origin", "*")
 
 export const addTocart = (product) => {
   myHeaders.append("Content-Type", "application/json");
   var raw = JSON.stringify({
     productId: product.id,
     priceId: product.unitPrice[0].id,
-    quantity: product.quantity,
+    quantity: `${product.quantity}`,
     note: "cart",
   });
 
-  var requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: raw,
-    redirect: "follow",
+  var config = {
+    method: 'post',
+    url: 'https://uat.ordering-farmshop.ekbana.net/api/v4/cart-product',
+    headers: { 
+      'Authorization': `Bearer ${access_token}`, 
+      'Warehouse-Id': '1', 
+      'Api-Key': '3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx', 
+      'Content-Type': 'application/json'
+    },
+    data : raw
   };
-
   return async (dispatch) => {
-    await fetch(`${BASE_URL}/api/v4/cart-product`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => dispatch({type:ADD_TO_CART,payload:result.data}))
+    await axios(config)
+      .then((response) => dispatch({type:ADD_TO_CART,payload:response.data.data}))
+      // .then((result) => dispatch({type:ADD_TO_CART,payload:result.data}))
       .catch((error) => console.log("error", error));
   };
 };
 
 export const fetchCart = () => {
-
-  var requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
+  var data = '';
+  var config = {
+    method: 'get',
+    url: 'https://uat.ordering-farmshop.ekbana.net/api/v4/cart',
+    headers: { 
+      'Authorization': `Bearer ${access_token}`, 
+      'Warehouse-Id': '1', 
+      'Api-Key': process.env.REACT_APP_API_KEY
+    },
+    data : data
   };
 
   return async (dispatch) => {
-    await fetch(`${BASE_URL}/api/v4/cart`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => dispatch({ type: FETCH_CART, payload: result.data }))
+    await axios(config)
+      .then((response) => dispatch({ type: FETCH_CART, payload: response.data.data }))
       .catch((error) => console.log("error", error));
   };
 };

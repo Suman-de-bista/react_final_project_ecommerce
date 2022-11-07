@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDribbble, faFacebook, faInstagram, faTwitter, faVimeo, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import {  faFacebook, faInstagram, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight, faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -38,7 +38,7 @@ const Footer = () => {
               <ul className="info">
                 <li>
                 <FontAwesomeIcon icon={faArrowRight}/>
-                  <Link to="about.html">About Us</Link>
+                  <Link to="about">About Us</Link>
                 </li>
                 <li>
                 <FontAwesomeIcon icon={faArrowRight}/>
@@ -54,7 +54,7 @@ const Footer = () => {
                 </li>
                 <li>
                 <FontAwesomeIcon icon={faArrowRight}/>
-                  <Link to="products.html">Special Products</Link>
+                  <Link to="category">Special Products</Link>
                 </li>
               </ul>
             </div>
@@ -75,7 +75,7 @@ const Footer = () => {
               <ul className="info">
                 <li>
                   <FontAwesomeIcon icon={faArrowRight}/>
-                  <Link to="products.html">Store</Link>
+                  <Link to="category">Store</Link>
                 </li>
                 <li>
                   <FontAwesomeIcon icon={faArrowRight}/>
@@ -97,10 +97,6 @@ const Footer = () => {
 
         <div className="footer-copy">
           <div className="container">
-            {/* <p>
-              © 2017 Super Market. All rights reserved | Design by{" "}
-              <Link to="http://w3layouts.com/">W3layouts</Link>
-            </p> */}
           </div>
         </div>
       </div>
@@ -109,25 +105,20 @@ const Footer = () => {
           <div className="w3layouts-foot">
             <ul>
               <li>
-                <Link to={!loading && siteConfig.pageData['section5 facebook']} className="w3_agile_facebook" target="_blank" rel="noreferrer">
+                <a href={!loading && siteConfig.pageData['section5 facebook']} className="w3_agile_facebook" target="_blank" rel="noreferrer">
                 <FontAwesomeIcon icon={faFacebook}/>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to={!loading && siteConfig.pageData['section5 instagram']} className="agile_twitter" target="_blank" rel="noreferrer">
+                <a href={!loading && siteConfig.pageData['section5 instagram']} className="agile_twitter" target="_blank" rel="noreferrer">
                 <FontAwesomeIcon icon={faInstagram}/>
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to={!loading && siteConfig.pageData['section5 youtube']} className="w3_agile_dribble" target="_blank" rel="noreferrer">
+                <a href={!loading && siteConfig.pageData['section5 youtube']} className="w3_agile_dribble" target="_blank" rel="noreferrer">
                 <FontAwesomeIcon icon={faYoutube}/>
-                </Link>
+                </a>
               </li>
-              {/* <li>
-                <Link to="#" className="w3_agile_vimeo">
-                  <FontAwesomeIcon icon={faVimeo}/>
-                </Link>
-              </li> */}
             </ul>
           </div>
           <div className="payment-w3ls">
@@ -136,12 +127,12 @@ const Footer = () => {
             <ul>
               <li>
               {!loading && siteConfig.paymentMethod.map((value)=>(
-            <p>{value.icon ===null?value.title:null}</p>
+            <p key={value.id}>{value.icon ===null?value.title:null}</p>
             ))}
               </li>
             </ul>
             {!loading && siteConfig.paymentMethod.map((value)=>(
-              value.icon && <img src={value.icon} alt={value.title} />
+              value.icon && <img src={value.icon} alt={value.title} key={value.id}/>
             ))}
           </div>
           {/* <div className="clearfix"> </div> */}

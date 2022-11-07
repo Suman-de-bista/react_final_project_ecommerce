@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Iframe from "react-iframe";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import {
   faEnvelope,
   faEnvelopeCircleCheck,
@@ -13,6 +13,7 @@ import {
   faSquareEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -35,7 +36,7 @@ const Contact = () => {
     setMessage(e.target.value);
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     var myHeaders = new Headers();
     myHeaders.append("Warehouse-Id", "1");
@@ -65,18 +66,17 @@ const Contact = () => {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result)=> {
+      .then((result) => {
         Swal.fire({
-          position: 'top-end',
-          icon: 'success',
+          position: "top-end",
+          icon: "success",
           title: `${result.data.success.message}`,
           showConfirmButton: false,
-          timer: 1500
-        })
-        setTimeout(function(){
+          timer: 1500,
+        });
+        setTimeout(function () {
           window.location.reload(false);
-       }, 2000); 
-        
+        }, 2000);
       })
       .catch((error) => console.log("error", error));
   };
@@ -131,7 +131,7 @@ const Contact = () => {
                 <ul className="wthree_contact_info_address">
                   <li>
                     <FontAwesomeIcon
-                      icon={faSquareEnvelope}
+                      icon={faEnvelope}
                       className="fa-phone"
                     />
                     <a href="#">
@@ -142,19 +142,40 @@ const Contact = () => {
                   </li>
                   <li>
                     <FontAwesomeIcon icon={faPhone} className="fa-phone" />
-                    {loading ? "Loading..." : siteConfig.pageData.phone}
+                    <div className="ph">{loading ? "Loading..." : siteConfig.pageData.phone}</div>
                   </li>
                 </ul>
                 <div className="w3_agile_social_icons w3_agile_social_icons_contact">
                   <ul>
                     <li>
-                      <a href="#" className="icon icon-cube agile_facebook"></a>
+                      <a
+                        href={
+                          !loading && siteConfig.pageData["section5 facebook"]
+                        }
+                        className="icon1 icon-cube1 facebook"
+                        target="_blank"
+                        rel="noreferrer"
+                      ></a>
                     </li>
                     <li>
-                      <a href="#" className="icon icon-cube agile_rss"></a>
+                      <a
+                        href={
+                          !loading && siteConfig.pageData["section5 instagram"]
+                        }
+                        className="icon1 icon-cube1 instagram"
+                        target="_blank"
+                        rel="noreferrer"
+                      ></a>
                     </li>
                     <li>
-                      <a href="#" className="icon icon-cube agile_t"></a>
+                      <a
+                        href={
+                          !loading && siteConfig.pageData["section5 youtube"]
+                        }
+                        className="icon1 icon-cube1 youtube"
+                        target="_blank"
+                        rel="noreferrer"
+                      ></a>
                     </li>
                   </ul>
                 </div>

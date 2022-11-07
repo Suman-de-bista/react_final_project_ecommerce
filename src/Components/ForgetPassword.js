@@ -1,17 +1,21 @@
 import React from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { Link,useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 import { useEffect } from "react";
 import { useState } from "react";
 
 
 const ForgetPassword = () => {
 
-  const [email,setEmail] = useState('')
+  const [email,setEmail] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  
+
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     var myHeaders = new Headers();
@@ -23,20 +27,39 @@ const ForgetPassword = () => {
     });
 
     var requestOptions = {
-    method: 'POST',
     headers: myHeaders,
     body: raw,
     redirect: 'follow'
     };
 
-    await fetch("https://uat.ordering-farmshop.ekbana.net/api/v4/auth/forgot-password", requestOptions)
-    .then(response => {response.json()
+    await axios.post("https://uat.ordering-farmshop.ekbana.net/api/v4/auth/forgot-password", requestOptions.body,requestOptions.headers)
+    .then(response => {
     if(response.status ===200){
-      navigate('/login')
-    }})
-    .catch(error => console.log('error', error));
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `Reset Code has been sent successfully. Please check your Email.`,
+        showConfirmButton: false,
+        timer: 2000
+      })
+      setTimeout(()=>{
+        navigate('/login')
+      },2500)
+    }
+  })
+    .catch(error => {
+      setError(error.response.data.errors);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title:"Oops...",
+        text: error.response.data.errors[0].message,
+        showConfirmButton: false,
+        timer: 3000
+      })
+    });
 
-    
+
     }
 
   const handleEmail = (e)=>{
@@ -57,12 +80,7 @@ const ForgetPassword = () => {
           >
             <li>
               <a href="index.html">
-                {/* <span
-                  className="glyphicon glyphicon-home"
-                  aria-hidden="true"
-                ></span> */}
                 <FontAwesomeIcon icon={faHome} className="fa-phone" />
-
                 Home
               </a>
             </li>
@@ -79,7 +97,7 @@ const ForgetPassword = () => {
             data-wow-delay=".5s"
           >
             <form onSubmit={handleSubmit}>
-              <input type="email" placeholder="Email Address" required onChange={handleEmail}/>
+              <input type="email" placeholder="Email Address" name="email" required onChange={handleEmail}/>
               <input type="submit" value="Reset Password"  />
             </form>
           </div>

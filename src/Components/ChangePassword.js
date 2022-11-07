@@ -1,9 +1,11 @@
 import React from "react";
+import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { Link,useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
+import axios from "axios";
 
 
 const ChangePassword = () => {
@@ -23,28 +25,50 @@ const ChangePassword = () => {
     myHeaders.append("Api-Key", "3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx");
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
+    var data = JSON.stringify({
         "new-password": `${newPassword}`,
         "old-password": `${oldPassword}`,
         "confirm-password": `${confirmPassword}`
       });
 
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
+      var config = {
+        method: 'post',
+        url: 'https://uat.ordering-farmshop.ekbana.net/api/v4/profile/change-password',
+        headers: { 
+          'Authorization': `Bearer ${access_token}`, 
+          'Api-Key': process.env.REACT_APP_API_KEY, 
+          'Content-Type': 'application/json'
+        },
+        data : data
       };
 
 
-    await fetch("https://uat.ordering-farmshop.ekbana.net/api/v4/profile/change-password", requestOptions)
-    .then(response =>{ response.json()
+    await axios(config)
+    .then(response =>{
       if(response.status ===200){
-        navigate('/login')
-        localStorage.clear();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: `Password Changed Successfully`,
+          showConfirmButton: false,
+          timer: 1500
+        })
+        setTimeout(()=>{
+          navigate('/login')
+          localStorage.clear();
+        },2000)
       }
     })
-    .catch(error => console.log('error', error));
+    .catch(error => {
+      console.log(error.response.data.errors);
+      Swal.fire({
+      position: 'top-end',
+      icon: 'error',
+      title:"Oops...",
+      text: error.response.data.errors[0].message ,
+      showConfirmButton: false,
+      timer: 3000
+    })});
 
     }
 

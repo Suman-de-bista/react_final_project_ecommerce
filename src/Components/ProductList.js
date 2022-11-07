@@ -2,12 +2,13 @@ import React,{useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../Redux/Actions/ProductActions";
 import { Link } from "react-router-dom";
-import { addTocart } from "../Redux/Actions/CartActions";
+import { addTocart, fetchCart } from "../Redux/Actions/CartActions";
 
 const ProductList = (props) => {
     const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(fetchCart())
   }, []);
 
 
@@ -16,17 +17,17 @@ const ProductList = (props) => {
   const loading = useSelector(state=> state.products.loading);
   const cartItems = useSelector(state=> state.cart.cartItems);
   
-console.log(cartItems.cartProducts);
+// console.log(cartItems.cartProducts);
   const items = !loading && props.products.subcategory ? products.filter(value=>value.categoryTitle === props.products.subcategory): products.filter(value=>value.categoryTitle === props.products.category);
-  console.log(items);
+  // console.log(items);
 
   const handleAddToCart = (product) => {
-
+    console.log(product)
     const addItem = cartItems && cartItems.cartProducts.filter((value)=>value.product.id === product.id);
     const quantity = addItem.length !==0 ? addItem[0].quantity+1 : 1;
-    console.log("Quantity : ",quantity);
+    // console.log("Quantity : ",quantity);
     product["quantity"] = quantity;
-    console.log(product);
+    // console.log(product);
     dispatch(addTocart(product));
   };
   return (

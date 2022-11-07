@@ -2,6 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Banner from '../Components/Banner';
 import BrandStore from '../Components/BrandStore';
+import { fetchCart } from '../Redux/Actions/CartActions';
 import { fetchHomePage } from '../Redux/Actions/ProductActions';
 // import { fetchSiteConfig } from '../Redux/Actions/SiteconfigActions';
 const TopSellingOffer = React.lazy(() => import('../Components/TopSellingOffer')) ;

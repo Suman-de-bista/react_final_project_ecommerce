@@ -6,6 +6,8 @@ import { useDispatch,useSelector } from "react-redux";
 import { useState } from "react";
 import {resetLoginStore, userRegister} from "../Redux/Actions/AuthenticationActions";
 import { useEffect } from "react";
+import Swal from 'sweetalert2';
+
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -44,7 +46,19 @@ const Register = () => {
   }
 
   useEffect(()=>{
-    !loading && loginResponse.data && navigate('/login');
+    if(!loading && loginResponse.data) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: `Success`,
+        text:'Successfully Registered.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setTimeout(()=>{
+        (navigate('/login'));
+      },2000)
+    }
     dispatch(resetLoginStore());
     localStorage.getItem('loginDetail') && navigate('/')
   },[loading])

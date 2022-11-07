@@ -32,8 +32,6 @@ const Header = () => {
     window.location.reload(false);
     
   }
-    // const data = JSON.parse(localStorage.getItem("loginDetail"))
-    // console.log(data.access_token);
   return (
     <div>
       <div className="agileits_header">

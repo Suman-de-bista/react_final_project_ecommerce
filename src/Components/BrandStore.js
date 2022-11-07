@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const BrandStore = () => {
   const brands = useSelector((state) => state.products.homepage.brands);
-  brands && console.log(brands[0]);
+
   return (
     <div>
       {brands && (
@@ -16,9 +16,9 @@ const BrandStore = () => {
               <div className="brands-agile"key={value.id}>
                 <div className=" w3layouts-brand">
                   <div className="brands-w3l">
-                    <p>
+                    {/* <p> */}
                       <Link to="/">{value.title}</Link>
-                    </p>
+                    {/* </p> */}
                   </div>
                 </div>
               </div>

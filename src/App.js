@@ -17,11 +17,15 @@ import ProductDetailPage from './Pages/ProductDetailPage';
 import Cart from './Components/Cart';
 import ForgetPassword from './Components/ForgetPassword';
 import ChangePassword from './Components/ChangePassword';
+import ScrollToTop from './Components/ScrollToTop';
+
 
 function App() {
+  
   return (
     <Router>
       <div className='App'>
+        <ScrollToTop/>
       <Header/>
       <Navbar/>
         <Routes>
@@ -37,6 +41,7 @@ function App() {
           <Route path='category/:category/:subcategory' element={<ProductPage/>}/>
           <Route path='category/:category/:subcategory/product/:productName' exact element={<ProductDetailPage/>}/>
           <Route path='category/:category/product/:productName' exact element={<ProductDetailPage/>}/>
+          <Route path='search/:category/product/:productName' exact element={<ProductDetailPage/>}/>
           <Route path='search/:search' element={<ProductPage/>}/>
         </Routes>
       <Footer/>

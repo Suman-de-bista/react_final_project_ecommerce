@@ -5,9 +5,11 @@ import ReactStars from "react-rating-stars-component";
 import { addTocart, fetchCart } from "../Redux/Actions/CartActions";
 import { useEffect } from "react";
 import { fetchProducts } from "../Redux/Actions/ProductActions";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetails = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const products = useSelector((state) => state.products.product);
   const loading = useSelector((state) => state.products.loading);
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -18,7 +20,8 @@ const ProductDetails = (props) => {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    const addItem =
+    if(localStorage.getItem("loginDetail")){
+      const addItem =
       cartItems &&
       cartItems.cartProducts.filter(
         (value) => value.product.id === selectedProduct[0].id
@@ -26,6 +29,10 @@ const ProductDetails = (props) => {
     const quantity = addItem.length !== 0 ? addItem[0].quantity + 1 : 1;
     selectedProduct[0]["quantity"] = quantity;
     dispatch(addTocart(selectedProduct[0]));
+    }
+    else{
+      navigate('/login')
+    }
   };
   useEffect(() => {
     dispatch(fetchProducts());

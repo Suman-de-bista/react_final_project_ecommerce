@@ -4,11 +4,12 @@ import ReactStars from "react-rating-stars-component";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchHomePage } from "../Redux/Actions/ProductActions";
 import { addTocart, fetchCart } from "../Redux/Actions/CartActions";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const TopSellingOffer = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchHomePage());
     if (localStorage.getItem("loginDetail")) {
@@ -17,12 +18,18 @@ const TopSellingOffer = () => {
   }, []);
 
   const handleAddToCart = (product) => {
-    const addItem =
-      cartItems &&
-      cartItems.cartProducts.filter((value) => value.product.id === product.id);
-    const quantity = addItem.length !== 0 ? addItem[0].quantity + 1 : 1;
-    product["quantity"] = quantity;
-    dispatch(addTocart(product));
+    if (localStorage.getItem("loginDetail")) {
+      const addItem =
+        cartItems &&
+        cartItems.cartProducts.filter(
+          (value) => value.product.id === product.id
+        );
+      const quantity = addItem.length !== 0 ? addItem[0].quantity + 1 : 1;
+      product["quantity"] = quantity;
+      dispatch(addTocart(product));
+    } else {
+      navigate("/login");
+    }
   };
 
   const homePage = useSelector(

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../Redux/Actions/ProductActions";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addTocart, fetchCart } from "../Redux/Actions/CartActions";
 
 const ProductList = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCart());
@@ -24,15 +25,21 @@ const ProductList = (props) => {
           (value) => value.categoryTitle === props.products.category
         );
 
-  const handleAddToCart = (product) => {
-    console.log(product);
-    const addItem =
-      cartItems &&
-      cartItems.cartProducts.filter((value) => value.product.id === product.id);
-    const quantity = addItem.length !== 0 ? addItem[0].quantity + 1 : 1;
-    product["quantity"] = quantity;
-    dispatch(addTocart(product));
-  };
+        const handleAddToCart = (product) => {
+          if (localStorage.getItem("loginDetail")) {
+            const addItem =
+              cartItems &&
+              cartItems.cartProducts.filter(
+                (value) => value.product.id === product.id
+              );
+            const quantity = addItem.length !== 0 ? addItem[0].quantity + 1 : 1;
+            product["quantity"] = quantity;
+            dispatch(addTocart(product));
+          } else {
+            navigate("/login");
+          }
+        };
+  
   return (
     <div className="product-list">
       {items &&

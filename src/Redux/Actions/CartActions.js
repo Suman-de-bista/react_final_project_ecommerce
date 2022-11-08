@@ -36,7 +36,14 @@ export const addTocart = (product) => {
     await axios(config)
       .then((response) => {
         dispatch({ type: ADD_TO_CART, payload: response.data.data });
-        console.log("dispatched");
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `Success`,
+          text: "Item added to the Cart successfully.",
+          showConfirmButton: false,
+          timer: 2000,
+        });
       })
       .catch((error) => console.log("error", error));
   };

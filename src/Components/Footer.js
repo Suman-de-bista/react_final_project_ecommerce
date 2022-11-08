@@ -25,7 +25,11 @@ const Footer = () => {
                 </li>
                 <li>
                 <FontAwesomeIcon icon={faEnvelope}/>
-                  <Link to="mailto:info@example.com">{loading? 'Loading...': siteConfig.pageData['section1 email']}</Link>
+                  <Link to="#"
+                  onClick={(e) => {
+                    window.location.href = siteConfig.pageData['section1 email'];
+                    e.preventDefault();
+                }}>{loading? 'Loading...': siteConfig.pageData['section1 email']}</Link>
                 </li>
                 <li>
                 <FontAwesomeIcon icon={faPhone}/>

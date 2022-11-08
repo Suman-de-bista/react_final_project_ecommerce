@@ -10,4 +10,4 @@ export const RESET_LOGIN_STORE = 'RESET_LOGIN_STORE';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const FETCH_CART = 'FETCH_CART';
-export const SAVE_ERROR = 'SAVE_ERROR';
+export const PATCH_CART = 'PATCH_CART';

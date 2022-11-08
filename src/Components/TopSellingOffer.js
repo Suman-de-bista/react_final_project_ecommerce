@@ -12,7 +12,9 @@ const TopSellingOffer = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchHomePage());
-    dispatch(fetchCart());
+    if (localStorage.getItem("loginDetail")){
+      dispatch(fetchCart());
+    }
 
   }, []);
 

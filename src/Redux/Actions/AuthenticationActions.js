@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { USER_LOGIN,USER_REGISTER,RESET_LOGIN_STORE, FETCH_PROFILE } from "../ActionTypes/ActionTypes";
 
 
@@ -53,6 +54,14 @@ export const userLogin = (loginDetail) => {
     response = await response.json();
     dispatch({type:USER_LOGIN,payload:response})
     response.access_token && localStorage.setItem("loginDetail",JSON.stringify(response))
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: `Success`,
+      text:"Successfully LoggedIn",
+      showConfirmButton: false,
+      timer: 2000
+    })
   }
 };
 

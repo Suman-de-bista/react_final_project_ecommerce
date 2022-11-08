@@ -5,13 +5,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { addTocart, fetchCart } from "../Redux/Actions/CartActions";
+import { addTocart, deleteCart, fetchCart, patchCart } from "../Redux/Actions/CartActions";
 import { useState } from "react";
+import {  axiosData } from "./axios";
 
 const Cart = () => {
   const quantity = useSelector((state) => state.cart.quantity);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const cartLoading = useSelector((state) => state.cart.loading);
+  const [localCart,setLocalCart] = useState(null);
+  const [dispatchItem, setDispatchItem] = useState(false)
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,29 +25,63 @@ const Cart = () => {
     cartItems.cartProducts
       .map((val) => val.price)
       .reduce((ac, val) => ac + val, 0);
+  console.log("localCart",localCart);
+
+
+  // const handleIncreaseProduct = (product) => {
+  //   product["localId"] = product.id;
+  //   console.log("local id add paxi product",product);
+  //   if(localCart!==null && localCart.id !==undefined && localCart.id !== product.id){
+   
+  //     const addItem = cartItems.cartProducts.filter((value) => value.product.id === product.id);
+  //     console.log("add item if",addItem);
+  //     const quantity = addItem.length !== 0 && addItem[0].quantity + 1;
+  //     product["quantity"] = quantity;
+  //     setLocalCart(product)
+  //     setDispatchItem(true)
+  //     dispatch(fetchCart());
+  //   }
+  //   else{
+  //     const addItem = localCart === null && cartItems ? cartItems.cartProducts.filter((value) => value.product.id === product.id):[localCart];
+  //       console.log("add item else",addItem);
+  //     const quantity = addItem.length !== 0 && addItem[0].quantity + 1;
+  //     product["quantity"] = quantity;
+  //     setLocalCart(product)
+  //     setDispatchItem(true)
+  //   }
+  //   if(localCart === null){
+  //     dispatch(addTocart(product));
+  //   }
+  //   setDispatchItem(false)
+  // };
+
+  // const handleDecreaseProduct = (product) => {
+  //   const subtractItem = localCart === null && cartItems ? cartItems.cartProducts.filter((value) => value.product.id === product.id):[localCart];
+  //   const quantity = subtractItem.length !== 0 && subtractItem[0].quantity - 1;
+  //   product["quantity"] = quantity;
+  //   product["localId"] = product.id;
+  //   setLocalCart(product)
+  // };
 
   const handleIncreaseProduct = (product) => {
     const addItem = cartItems && cartItems.cartProducts.filter((value) => value.product.id === product.id);
     const quantity = addItem.length !== 0 && addItem[0].quantity + 1;
-    // console.log("Quantity : ",quantity);
-    product["quantity"] = quantity;
-    console.log(product);
-    dispatch(addTocart(product));
-	dispatch(fetchCart());
-  };
-  const handleDecreaseProduct = (product) => {
-    const addItem = cartItems && cartItems.cartProducts.filter((value) => value.product.id === product.id);
-    const quantity = addItem.length !== 0 && addItem[0].quantity - 1;
-    // console.log("Quantity : ",quantity);
-    product["quantity"] = quantity;
-    console.log(product);
-    dispatch(addTocart(product));
-	dispatch(fetchCart());
-  };
+    dispatch(patchCart(addItem[0].id,quantity))
+  }
+  const handleDecreaseProduct = (product,id) => {
+    const subtractItem = cartItems && cartItems.cartProducts.filter((value) => value.product.id === product.id);
+    const quantity = subtractItem.length !== 0 && subtractItem[0].quantity - 1;
+    quantity ===0 ? dispatch(deleteCart(id)):dispatch(patchCart(subtractItem[0].id,quantity));
+  }
+
+  const handleDeleteItem = async(id)=>{
+    dispatch(deleteCart(id))
+    // }
+  }
 
   useEffect(() => {
-    dispatch(fetchCart());
     !localStorage.getItem("loginDetail") && navigate("/");
+    dispatch(fetchCart())
   }, [cartLoading]);
 
   return (
@@ -104,9 +142,9 @@ const Cart = () => {
                     <td className="invert">
                       <div className="quantity">
                         <div className="quantity-select">
-                          <div className="entry value-minus" onClick={()=>handleDecreaseProduct(value.product)}>&nbsp;</div>
+                          <div className="entry value-minus" onClick={()=>handleDecreaseProduct(value.product,value.id)}>&nbsp;</div>
                           <div className="entry value">
-                            <span>{value.quantity}</span>
+                            <span>{localCart !==null && value.product.id===localCart.id?localCart.quantity:value.quantity}</span>
                           </div>
                           <div className="entry value-plus active" onClick={()=>handleIncreaseProduct(value.product)}>&nbsp;</div>
                         </div>
@@ -117,7 +155,7 @@ const Cart = () => {
                     <td className="invert">Rs.{value.price}</td>
                     <td className="invert">
                       <div className="rem">
-                        <button className="close1"> x</button>
+                        <button className="close1" onClick={()=>handleDeleteItem(value.id)}> x</button>
                       </div>
                     </td>
                   </tr>
@@ -158,3 +196,5 @@ const Cart = () => {
 };
 
 export default Cart;
+
+

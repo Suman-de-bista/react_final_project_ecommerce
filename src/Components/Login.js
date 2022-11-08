@@ -22,8 +22,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const loginDetails = {username,password}
-    dispatch(userLogin(loginDetails))
-    
+    dispatch(userLogin(loginDetails)) 
   }
   const handleUsername = (e)=>{
     setUsername(e.target.value);
@@ -45,8 +44,10 @@ const Login = () => {
   }
 
   useEffect(()=>{
-    checkLogin();
+    setTimeout(()=>{
+      checkLogin();
     
+    },2500)
   },[loginResponse])
 
   useEffect(()=>{

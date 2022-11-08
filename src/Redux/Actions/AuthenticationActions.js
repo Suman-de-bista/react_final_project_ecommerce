@@ -1,99 +1,117 @@
-import Swal from 'sweetalert2';
-import { USER_LOGIN,USER_REGISTER,RESET_LOGIN_STORE, FETCH_PROFILE } from "../ActionTypes/ActionTypes";
+import axios from "axios";
+import Swal from "sweetalert2";
+import {
+  USER_LOGIN,
+  USER_REGISTER,
+  RESET_LOGIN_STORE,
+  FETCH_PROFILE,
+} from "../ActionTypes/ActionTypes";
 
-
-const BASE_URL = "https://uat.ordering-farmshop.ekbana.net";
-const access_token = localStorage.getItem('loginDetail') && JSON.parse(localStorage.getItem("loginDetail")).access_token
+// const BASE_URL = "https://uat.ordering-farmshop.ekbana.net";
+const access_token =
+  localStorage.getItem("loginDetail") &&
+  JSON.parse(localStorage.getItem("loginDetail")).access_token;
 var myHeaders = new Headers();
 myHeaders.append(
   "Api-Key",
-  "3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx"
+  `${process.env.REACT_APP_API_KEY}`
 );
 
 export const userRegister = (registerDetail) => {
+  var data = new FormData();
+  data.append("first_name", `${registerDetail.fname}`);
+  data.append("last_name", `${registerDetail.lname}`);
+  data.append("email", `${registerDetail.email}`);
+  data.append("password", `${registerDetail.password}`);
+  data.append("mobile_number", `${registerDetail.phnumber}`);
 
-var formdata = new FormData();
-formdata.append("first_name", `${registerDetail.fname}`);
-formdata.append("last_name", `${registerDetail.lname}`);
-formdata.append("email", `${registerDetail.email}`);
-formdata.append("password", `${registerDetail.password}`);
-formdata.append("mobile_number", `${registerDetail.phnumber}`);
+  var config = {
+    method: "post",
+    url: `${process.env.REACT_APP_BASE_URL}/api/v4/auth/signup`,
+    headers: myHeaders,
+    data: data,
+  };
 
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: formdata,
-  redirect: 'follow'
-};
-
-return async(dispatch) =>{
-  let response = await fetch(`${BASE_URL}/api/v4/auth/signup`, requestOptions);
-  response = await response.json();
-  dispatch({type:USER_REGISTER,payload:response})
-}
+  return async (dispatch) => {
+    await axios(config)
+      .then( (response)=> {
+        dispatch({ type: USER_REGISTER, payload: response.data });
+      })
+      .catch( (error)=> {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title:"Oops...",
+          text: error.response.data.errors[0].message,
+          showConfirmButton: false,
+          timer: 3000
+        })
+      });
+  };
 };
 
 export const userLogin = (loginDetail) => {
-  
-  var formdata = new FormData();
-  formdata.append("client_id", "2");
-  formdata.append("client_secret", "2TJrcyMbXT6gDQXVqeSlRbOKvtTfMsuxfuK6vpey");
-  formdata.append("grant_type", "password");
-  formdata.append("username", `${loginDetail.username}`);
-  formdata.append("password", `${loginDetail.password}`);
+  var data = new FormData();
+  data.append("client_id", "2");
+  data.append("client_secret", "2TJrcyMbXT6gDQXVqeSlRbOKvtTfMsuxfuK6vpey");
+  data.append("grant_type", "password");
+  data.append("username", `${loginDetail.username}`);
+  data.append("password", `${loginDetail.password}`);
 
-  var requestOptions = {
-    method: "POST",
+  var config = {
+    method: 'post',
+    url: `${process.env.REACT_APP_BASE_URL}/api/v4/auth/login`,
     headers: myHeaders,
-    body: formdata,
-    redirect: "follow",
+    data : data
   };
 
-  return async(dispatch) =>{
-    let response = await fetch(`${BASE_URL}/api/v4/auth/login`, requestOptions);
-    response = await response.json();
-    dispatch({type:USER_LOGIN,payload:response})
-    response.access_token && localStorage.setItem("loginDetail",JSON.stringify(response))
+  return async (dispatch) => {
+    await axios(config)
+    .then( (response) =>{
+      dispatch({ type: USER_LOGIN, payload: response.data });
+    response.data.access_token &&
+      localStorage.setItem("loginDetail", JSON.stringify(response.data));
     Swal.fire({
-      position: 'top-end',
-      icon: 'success',
+      position: "top-end",
+      icon: "success",
       title: `Success`,
-      text:"Successfully LoggedIn",
+      text: "Successfully LoggedIn",
       showConfirmButton: false,
-      timer: 2000
+      timer: 2000,
+    });
     })
-  }
+    .catch( (error) =>{
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title:"Oops...",
+        text: error.response.data.errors[0].message,
+        showConfirmButton: false,
+        timer: 3000
+      })
+    });
+  };
 };
 
 export const fetchProfile = (dispatch) => {
-
   myHeaders.append("Authorization", `Bearer ${access_token}`);
-
   var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-  };
-  
-
-  return async(dispatch) =>{
-    let response = await fetch(`${BASE_URL}/api/v4/profile`, requestOptions);
-    response = await response.json();
-    dispatch({type:FETCH_PROFILE,payload:response.data})
-    response.data && localStorage.setItem("profile",JSON.stringify(response.data))
-  }
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
 };
 
-
-
+  return async (dispatch) => {
+    let response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v4/profile/show`, requestOptions);
+    response = await response.json();
+    dispatch({ type: FETCH_PROFILE, payload: response.data });
+    response.data &&
+      localStorage.setItem("profile", JSON.stringify(response.data));
+  };
+};
 
 export const resetLoginStore = () => {
-  return (dispatch) =>{
-    dispatch({type:RESET_LOGIN_STORE,payload:[]})
-  }
-}
-
-
-
-
-
+  return (dispatch) => {
+    dispatch({ type: RESET_LOGIN_STORE, payload: [] });
+  };
+};

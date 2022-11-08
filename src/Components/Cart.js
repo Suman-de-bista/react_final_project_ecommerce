@@ -1,20 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { MdCancel, MdArrowBack } from "react-icons/md";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { addTocart, deleteCart, fetchCart, patchCart } from "../Redux/Actions/CartActions";
+import {  deleteCart, fetchCart, patchCart } from "../Redux/Actions/CartActions";
 import { useState } from "react";
-import {  axiosData } from "./axios";
 
-const Cart = () => {
-  const quantity = useSelector((state) => state.cart.quantity);
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const cartLoading = useSelector((state) => state.cart.loading);
-  const [localCart,setLocalCart] = useState(null);
-  const [dispatchItem, setDispatchItem] = useState(false)
+const Cart = ({cartItems,cartLoading}) => {
+
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,43 +20,6 @@ const Cart = () => {
     cartItems.cartProducts
       .map((val) => val.price)
       .reduce((ac, val) => ac + val, 0);
-  console.log("localCart",localCart);
-
-
-  // const handleIncreaseProduct = (product) => {
-  //   product["localId"] = product.id;
-  //   console.log("local id add paxi product",product);
-  //   if(localCart!==null && localCart.id !==undefined && localCart.id !== product.id){
-   
-  //     const addItem = cartItems.cartProducts.filter((value) => value.product.id === product.id);
-  //     console.log("add item if",addItem);
-  //     const quantity = addItem.length !== 0 && addItem[0].quantity + 1;
-  //     product["quantity"] = quantity;
-  //     setLocalCart(product)
-  //     setDispatchItem(true)
-  //     dispatch(fetchCart());
-  //   }
-  //   else{
-  //     const addItem = localCart === null && cartItems ? cartItems.cartProducts.filter((value) => value.product.id === product.id):[localCart];
-  //       console.log("add item else",addItem);
-  //     const quantity = addItem.length !== 0 && addItem[0].quantity + 1;
-  //     product["quantity"] = quantity;
-  //     setLocalCart(product)
-  //     setDispatchItem(true)
-  //   }
-  //   if(localCart === null){
-  //     dispatch(addTocart(product));
-  //   }
-  //   setDispatchItem(false)
-  // };
-
-  // const handleDecreaseProduct = (product) => {
-  //   const subtractItem = localCart === null && cartItems ? cartItems.cartProducts.filter((value) => value.product.id === product.id):[localCart];
-  //   const quantity = subtractItem.length !== 0 && subtractItem[0].quantity - 1;
-  //   product["quantity"] = quantity;
-  //   product["localId"] = product.id;
-  //   setLocalCart(product)
-  // };
 
   const handleIncreaseProduct = (product) => {
     const addItem = cartItems && cartItems.cartProducts.filter((value) => value.product.id === product.id);
@@ -144,7 +102,7 @@ const Cart = () => {
                         <div className="quantity-select">
                           <div className="entry value-minus" onClick={()=>handleDecreaseProduct(value.product,value.id)}>&nbsp;</div>
                           <div className="entry value">
-                            <span>{localCart !==null && value.product.id===localCart.id?localCart.quantity:value.quantity}</span>
+                            <span>{value.quantity}</span>
                           </div>
                           <div className="entry value-plus active" onClick={()=>handleIncreaseProduct(value.product)}>&nbsp;</div>
                         </div>

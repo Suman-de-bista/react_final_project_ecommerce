@@ -18,10 +18,12 @@ import Cart from './Components/Cart';
 import ForgetPassword from './Components/ForgetPassword';
 import ChangePassword from './Components/ChangePassword';
 import ScrollToTop from './Components/ScrollToTop';
+import { useSelector } from 'react-redux';
 
 
 function App() {
-  
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const cartLoading = useSelector((state) => state.cart.loading);
   return (
     <Router>
       <div className='App'>
@@ -35,7 +37,7 @@ function App() {
           <Route path='forget-password' element={<ForgetPassword/>}/>
           <Route path='change-password' element={<ChangePassword/>}/>
           <Route path='contact' element={<Contact/>}/>
-          <Route path='cart' element={<Cart/>}/>
+          <Route path='cart' element={<Cart cartItems={cartItems} cartLoading={cartLoading}/>}/>
           <Route path='category' element={<ProductPage/>}/>
           <Route path='category/:category/' element={<ProductPage/>}/>
           <Route path='category/:category/:subcategory' element={<ProductPage/>}/>

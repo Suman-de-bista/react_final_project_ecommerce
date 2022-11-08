@@ -2,20 +2,19 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { Link,useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { userLogin } from "../Redux/Actions/AuthenticationActions";
 import { useState } from "react";
 import Swal from 'sweetalert2';
 
 
-const Login = () => {
+const Login = ({ loginResponse }) => {
   const dispatch = useDispatch();
   const [username,setUsername] = useState('')
   const [password,setPassword] = useState('')
   const [isLoggedIn,setIsLoggedIn] = useState(false)
-  const loading = useSelector(state=> state.Auth.loading)
-  const loginResponse = useSelector(state=> state.Auth.login)
+  
   const navigate = useNavigate();
 
   
@@ -78,10 +77,6 @@ const Login = () => {
           >
             <li>
               <a href="index.html">
-                {/* <span
-                  className="glyphicon glyphicon-home"
-                  aria-hidden="true"
-                ></span> */}
                 <FontAwesomeIcon icon={faHome} className="fa-phone" />
 
                 Home
@@ -113,10 +108,6 @@ const Login = () => {
             <Link to="/register">Register Here</Link> (Or) go back to{" "}
             <Link to="/">
               Home
-              {/* <span
-                className="glyphicon glyphicon-menu-right"
-                aria-hidden="true"
-              ></span> */}
             <FontAwesomeIcon icon={faHome} className="fa-phone" />
 
             </Link>

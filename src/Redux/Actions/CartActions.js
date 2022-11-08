@@ -1,8 +1,7 @@
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { ADD_TO_CART, FETCH_CART } from "../ActionTypes/ActionTypes";
 
-const BASE_URL = "https://uat.ordering-farmshop.ekbana.net";
 const access_token =
   localStorage.getItem("loginDetail") &&
   JSON.parse(localStorage.getItem("loginDetail")).access_token;
@@ -11,10 +10,7 @@ console.log(access_token);
 var myHeaders = new Headers();
 myHeaders.append("Authorization", `Bearer ${access_token}`);
 myHeaders.append("Warehouse-Id", "1");
-myHeaders.append(
-  "Api-Key",
-  "3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx"
-);
+myHeaders.append("Api-Key", process.env.REACT_APP_API_KEY);
 
 export const addTocart = (product) => {
   myHeaders.append("Content-Type", "application/json");
@@ -27,11 +23,11 @@ export const addTocart = (product) => {
 
   var config = {
     method: "post",
-    url: "https://uat.ordering-farmshop.ekbana.net/api/v4/cart-product",
+    url: `${process.env.REACT_APP_BASE_URL}/api/v4/cart-product`,
     headers: {
       Authorization: `Bearer ${access_token}`,
       "Warehouse-Id": "1",
-      "Api-Key": "3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx",
+      "Api-Key": process.env.REACT_APP_API_KEY,
       "Content-Type": "application/json",
     },
     data: raw,
@@ -42,7 +38,6 @@ export const addTocart = (product) => {
         dispatch({ type: ADD_TO_CART, payload: response.data.data });
         console.log("dispatched");
       })
-      // .then((result) => dispatch({type:ADD_TO_CART,payload:result.data}))
       .catch((error) => console.log("error", error));
   };
 };
@@ -51,7 +46,7 @@ export const fetchCart = () => {
   var data = "";
   var config = {
     method: "get",
-    url: "https://uat.ordering-farmshop.ekbana.net/api/v4/cart",
+    url: `${process.env.REACT_APP_BASE_URL}/api/v4/cart`,
     headers: {
       Authorization: `Bearer ${access_token}`,
       "Warehouse-Id": "1",
@@ -69,62 +64,62 @@ export const fetchCart = () => {
   };
 };
 export const deleteCart = (cartId) => {
-  var data = '';
+  var data = "";
 
-var config = {
-  method: 'delete',
-  url: `${process.env.REACT_APP_BASE_URL}/api/v4/cart-product/${cartId}`,
-  headers: { 
-    'Authorization': `Bearer ${access_token}`, 
-    'Warehouse-Id': '1', 
-    'Api-Key': process.env.REACT_APP_API_KEY,
-  },
-  data : data
-};
+  var config = {
+    method: "delete",
+    url: `${process.env.REACT_APP_BASE_URL}/api/v4/cart-product/${cartId}`,
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+      "Warehouse-Id": "1",
+      "Api-Key": process.env.REACT_APP_API_KEY,
+    },
+    data: data,
+  };
 
   return async (dispatch) => {
     axios(config)
-      .then( (response) =>{
-        dispatch(fetchCart())
+      .then((response) => {
+        dispatch(fetchCart());
         Swal.fire({
-          position: 'top-end',
-          icon: 'success',
+          position: "top-end",
+          icon: "success",
           title: `Success`,
-          text:"Item Successfully Deleted",
+          text: "Item Successfully Deleted",
           showConfirmButton: false,
-          timer: 2000
-        })
+          timer: 2000,
+        });
       })
-      .catch( (error) =>{
+      .catch((error) => {
         console.log(error);
       });
   };
 };
 
-export const patchCart = (productId,productQuantity) => {
+export const patchCart = (productId, productQuantity) => {
   var data = JSON.stringify({
-    "quantity": productQuantity,
-    "note": "Patched"
+    quantity: productQuantity,
+    note: "Patched",
   });
-  
+
   var config = {
-    method: 'patch',
-    url: `https://uat.ordering-farmshop.ekbana.net/api/v4/cart-product/${productId}`,
-    headers: { 
-      'Authorization': `Bearer ${access_token}`, 
-      'Warehouse-Id': '1', 
-      'Api-Key': process.env.REACT_APP_API_KEY, 
-      'Content-Type': 'application/json'
+    method: "patch",
+    url: `${process.env.REACT_APP_BASE_URL}/api/v4/cart-product/${productId}`,
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+      "Warehouse-Id": "1",
+      "Api-Key": process.env.REACT_APP_API_KEY,
+      "Content-Type": "application/json",
     },
-    data : data
+    data: data,
   };
 
   return async (dispatch) => {
     axios(config)
-      .then( (response) =>{
-        dispatch(fetchCart())
+      .then((response) => {
+        dispatch(fetchCart());
       })
-      .catch( (error) =>{
+      .catch((error) => {
         console.log(error);
       });
   };

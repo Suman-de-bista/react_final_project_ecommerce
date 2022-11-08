@@ -5,10 +5,10 @@ import ProductReducers from "./Reducers/ProductReducers";
 import SiteconfigReducers from "./Reducers/SiteconfigReducers";
 
 const RootReducer = combineReducers({
-    products: ProductReducers,
-    siteConfig: SiteconfigReducers,
-    Auth: AuthenticateReducers,
-    cart: CartReducer,
-})
+  products: ProductReducers,
+  siteConfig: SiteconfigReducers,
+  Auth: AuthenticateReducers,
+  cart: CartReducer,
+});
 
 export default RootReducer;

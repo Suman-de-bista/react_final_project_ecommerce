@@ -12,20 +12,18 @@ const BrandStore = () => {
           <div className="container">
             <h3>Brand Store</h3>
             <div className="brand-item">
-            {brands.map((value) => (
-              <div className="brands-agile"key={value.id}>
-                <div className=" w3layouts-brand">
-                  <div className="brands-w3l">
-                    {/* <p> */}
+              {brands.map((value) => (
+                <div className="brands-agile" key={value.id}>
+                  <div className=" w3layouts-brand">
+                    <div className="brands-w3l">
                       <Link to="/">{value.title}</Link>
-                    {/* </p> */}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
             </div>
 
-            {/* <div className="clearfix"></div> */}
+            <div className="clearfix"></div>
           </div>
         </div>
       )}

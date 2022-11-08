@@ -5,25 +5,19 @@ import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-// import { fetchCart } from "../Redux/Actions/CartActions";
 const Navbar = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
-    // dispatch(fetchCart());
   }, []);
   const loading = useSelector((state) => state.products.loading);
   const Category = useSelector((state) => state.products.category);
 
   return (
     <div>
-      {/* <!-- navigation --> */}
-
       <div className="navigation-agileits">
         <div className="container">
           <nav className="navbar navbar-default">
-            {/* <!-- Brand and toggle get grouped for better mobile display --> */}
-
             <div className="navbar-header nav_2">
               <button
                 type="button"
@@ -51,19 +45,6 @@ const Navbar = () => {
                       Home
                     </Link>
                   </li>
-                  {/* {Category.map((value)=>(
-                <li className="active" key={value.id} onClick={handleDropdown}>
-                  <a href="#" className="act">
-                    {value.title}
-                  </a>
-                    
-                    {state && value.subcategories && value.subcategories.map((subcategory)=>(
-                      <li key={subcategory.id}><Link to={`/${value.title}/${subcategory.title}`}>{subcategory.title}</Link></li>
-                    ))}
-                    
-              </li>
-              ))} */}
-
                   {Category.map((value) =>
                     value.subcategories.length !== 0 ? (
                       <li className="active" key={value.id}>
@@ -79,7 +60,8 @@ const Navbar = () => {
                                   <NavDropdown.Item className="dropdown-item">
                                     <Link
                                       to={`category/${value.title}/${subcategory.title}`}
-                                    className='act'>
+                                      className="act"
+                                    >
                                       {subcategory.title}
                                     </Link>
                                   </NavDropdown.Item>
@@ -112,8 +94,6 @@ const Navbar = () => {
           </nav>
         </div>
       </div>
-
-      {/* <!-- //navigation --> */}
     </div>
   );
 };

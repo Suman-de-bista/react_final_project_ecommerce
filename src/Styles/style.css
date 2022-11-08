@@ -1040,7 +1040,22 @@ a.w3_agile_vimeo:hover{
     display: block;
     width: 100%;
 }
+.login-form-grids input[name="firstName"]{
+    margin-bottom: 10px;
+}
+.login-form-grids input[name="email"]{
+    margin-bottom: 10px;
+}
+.login-form-grids input[name="phNumber"]{
+    margin-bottom: 10px;
+}
+.login-form-grids input[name="password"]{
+    margin-bottom: 10px;
+}
 
+.login-form-grids input[type="confirmPassword"]{
+	margin-bottom: 10px;
+}
 .login-form-grids input[type="password"]{
 	margin:1em 0 0;
 }
@@ -3653,7 +3668,13 @@ td.invert-image a img {
     align-items: center;
 
 } */
-
+.red{
+    border-color: red !important;
+}
+.error{
+    font-size: 10px;
+    color: red;
+}
 /* CART */
 
 .cart{
@@ -3731,4 +3752,53 @@ td.invert-image a img {
     width: 50%;
     font-size: 16px;
     margin: auto;
+}
+
+ul.profile-info li {
+    margin: 5px 0;
+    list-style: none !important;
+}
+
+/* PROFILE */
+.products .container .agileinfo_single .agileinfo_single_left {
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.products .container .agileinfo_single .agileinfo_single_left img{
+    width: 80%;
+}
+.products .container .agileinfo_single_right ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    width: 40%;
+    padding: 10px;
+    list-style: none;
+}
+.products .container .agileinfo_single_right ul li{
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.products .container .agileinfo_single_right ul li span{
+    font-weight: 500;
+    padding-left: 5px;
+}
+.products .container .agileinfo_single_right ul button{
+    width: 50%;
+    padding: 10px 10px;
+    text-align: center;
+    /* margin:auto; */
+    margin: 0 10px;
+    border: none;
+    background-color: #d8703f;
+    color: white;
+    border-radius: 10px;
+}
+.products .container .agileinfo_single_right ul button:hover{
+    background-color: #70664c;
 }

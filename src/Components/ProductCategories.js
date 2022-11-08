@@ -13,24 +13,30 @@ const ProductCategories = () => {
         <div className=" products-left">
           <div className="categories">
             <h2>Categories</h2>
-            {!loading && Category.map((value)=>(
+            {!loading &&
+              Category.map((value) => (
                 <ul className="cate" key={value.id}>
-                <li>
-                <Link to={`/category/${value.title}`}>
-                    <FontAwesomeIcon icon={faArrowRight}/>{value.title}
-                  </Link>
-                </li>
-               {value.subcategories && value.subcategories.map((subcategory)=>(
-                 <ul key={subcategory.id}>
-                 <li>
-                   <Link to={`/category/${value.title}/${subcategory.title}`}>
-                     <FontAwesomeIcon icon={faArrowRight}/>{subcategory.title}
-                   </Link>
-                 </li>
-               </ul>
-               ))}
-              </ul>
-            ))}
+                  <li>
+                    <Link to={`/category/${value.title}`}>
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {value.title}
+                    </Link>
+                  </li>
+                  {value.subcategories &&
+                    value.subcategories.map((subcategory) => (
+                      <ul key={subcategory.id}>
+                        <li>
+                          <Link
+                            to={`/category/${value.title}/${subcategory.title}`}
+                          >
+                            <FontAwesomeIcon icon={faArrowRight} />
+                            {subcategory.title}
+                          </Link>
+                        </li>
+                      </ul>
+                    ))}
+                </ul>
+              ))}
           </div>
         </div>
       </div>

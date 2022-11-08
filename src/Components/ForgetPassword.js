@@ -2,73 +2,75 @@ import React from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { Link,useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useState } from "react";
 
-
 const ForgetPassword = () => {
-
-  const [email,setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-
-
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     var myHeaders = new Headers();
-    myHeaders.append("Api-Key", "3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx");
+    myHeaders.append(
+      "Api-Key",
+      "3uxpudnPFywb4AYZjjpbhOHRV3YMTNscyRF4AiVZi2go6brJMx"
+    );
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-    "email": email
+      email: email,
     });
 
     var requestOptions = {
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
     };
 
-    await axios.post("https://uat.ordering-farmshop.ekbana.net/api/v4/auth/forgot-password", requestOptions.body,requestOptions.headers)
-    .then(response => {
-    if(response.status ===200){
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: `Reset Code has been sent successfully. Please check your Email.`,
-        showConfirmButton: false,
-        timer: 2000
+    await axios
+      .post(
+        "https://uat.ordering-farmshop.ekbana.net/api/v4/auth/forgot-password",
+        requestOptions.body,
+        requestOptions.headers
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `Reset Code has been sent successfully. Please check your Email.`,
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          setTimeout(() => {
+            navigate("/login");
+          }, 2500);
+        }
       })
-      setTimeout(()=>{
-        navigate('/login')
-      },2500)
-    }
-  })
-    .catch(error => {
-      setError(error.response.data.errors);
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        title:"Oops...",
-        text: error.response.data.errors[0].message,
-        showConfirmButton: false,
-        timer: 3000
-      })
-    });
+      .catch((error) => {
+        setError(error.response.data.errors);
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.errors[0].message,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      });
+  };
 
-
-    }
-
-  const handleEmail = (e)=>{
+  const handleEmail = (e) => {
     setEmail(e.target.value);
-  }
+  };
 
-  useEffect(()=>{
-    localStorage.getItem("loginDetail") && navigate('/')
-  },[])
+  useEffect(() => {
+    localStorage.getItem("loginDetail") && navigate("/");
+  }, []);
 
   return (
     <div>
@@ -97,8 +99,14 @@ const ForgetPassword = () => {
             data-wow-delay=".5s"
           >
             <form onSubmit={handleSubmit}>
-              <input type="email" placeholder="Email Address" name="email" required onChange={handleEmail}/>
-              <input type="submit" value="Reset Password"  />
+              <input
+                type="email"
+                placeholder="Email Address"
+                name="email"
+                required
+                onChange={handleEmail}
+              />
+              <input type="submit" value="Reset Password" />
             </form>
           </div>
         </div>
